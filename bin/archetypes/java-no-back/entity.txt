@@ -1,0 +1,18 @@
+<_forEntity_>
+./src/com/entities/<_entity.name:firstCap_>.java
+package com.entities;
+
+public class <_entity.name:firstCap_> {
+<_forProp_>
+  public <_prop.type_> <_prop.name_>;
+<_endForProp_>
+<_forProp_>
+	public <_prop.type_> get<_prop.name:firstCap_>() {
+		return <_prop.name_>;
+	}
+
+	public void set<_prop.name:firstCap_>(<_prop.type_> <_prop.name_>) {
+		this.<_prop.name_> = <_prop.name_>;
+	}
+<_endForProp_>
+}

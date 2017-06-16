@@ -1,0 +1,37 @@
+<_forEntity_>
+./ngApp/services/<_entity.name:firstCap_>Service.ts
+namespace <_name_>.Services {
+
+  export class <_entity.name:firstCap_>Service {
+    private <_entity.name:firstCap_>_RESOURCE = this.$resource('/api/<_entity.name_>s/:id', null,
+      {
+          'update': { method:'PUT' }
+      });
+
+    static $inject = ['$resource'];
+
+    constructor(private $resource) {}
+
+    public getAll<_entity.name:firstCap_>s() {
+      return this.<_entity.name:firstCap_>_RESOURCE.query();
+    }
+
+    public get<_entity.name:firstCap_>(id) {
+      return this.<_entity.name:firstCap_>_RESOURCE.get({id: id});
+    }
+
+    public delete<_entity.name:firstCap_>(id) {
+      return this.<_entity.name:firstCap_>_RESOURCE.delete({id: id}).$promise;
+    }
+
+    public create<_entity.name:firstCap_>(<_entity.name_>) {
+      return this.<_entity.name:firstCap_>_RESOURCE.save(<_entity.name_>).$promise;
+    }
+
+    public update<_entity.name:firstCap_>(id, <_entity.name_>) {
+      return this.<_entity.name:firstCap_>_RESOURCE.update({id: id}, <_entity.name_>).$promise;
+    }
+  }
+
+angular.module('<_name_>').service('<_entity.name_>Service', <_entity.name:firstCap_>Service);
+}

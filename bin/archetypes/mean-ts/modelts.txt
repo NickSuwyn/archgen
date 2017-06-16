@@ -1,0 +1,20 @@
+<_forEntity_>
+./models/<_entity.name_>.ts
+import * as mongoose from 'mongoose';
+
+export interface <_entity.name:firstCap_> extends mongoose.Document {
+<_forProp_>
+  <_prop.name_>: <_prop.type_>;
+<_endForProp_>
+}
+
+let <_entity.name_>Schema = new mongoose.Schema({
+<_forProp_>
+  <_prop.name_>: {
+    type: <_prop.type:firstCap_>
+  },
+<_endForProp_>
+
+});
+
+export default mongoose.model<<_entity.name:firstCap_>>('<_entity.name:firstCap_>', <_entity.name_>Schema);

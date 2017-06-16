@@ -1,0 +1,31 @@
+<_forEntity_>
+./src/com/controllers/<_entity.name:firstCap_>Controller.java
+package com.controllers;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.entities.<_entity.name:firstCap_>;
+import com.services.<_entity.name:firstCap_>Service;
+
+@Controller
+public class <_entity.name:firstCap_>Controller {
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>", method = RequestMethod.POST)
+	public ResponseEntity<Object> create<_entity.name:firstCap_>(@RequestBody <_entity.name:firstCap_> <_entity.name_>) {
+		return new ResponseEntity<Object>(<_entity.name:firstCap_>Service.create(<_entity.name_>), HttpStatus.CREATED);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>", method = RequestMethod.GET)
+	public ResponseEntity<Object> getAll() {
+		return new ResponseEntity<Object>(<_entity.name:firstCap_>Service.getAll(), HttpStatus.OK);
+	}
+
+}

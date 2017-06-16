@@ -1,0 +1,9 @@
+<_forEntity_>
+./ngApp/controllers/<_entity.name:firstCap_>Controller.ts
+namespace <_name_>.Controllers {
+
+  export class <_entity.name:firstCap_>Controller {
+    
+  }
+
+}

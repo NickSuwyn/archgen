@@ -1,0 +1,18 @@
+{
+  "name": "archgen",
+  "version": "0.1.1",
+  "description": "A code generation tool to reduce boiler plate coding.",
+  "main": "fileReader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Suwyn",
+  "license": "ISC",
+  "dependencies": {
+    "file-system": "^2.2.2"
+  },
+  "preferGlobal": "true",
+  "bin": {
+    "archgen": "./bin/fileReader.js"
+  }
+}

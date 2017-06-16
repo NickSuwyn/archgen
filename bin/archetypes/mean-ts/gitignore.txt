@@ -1,0 +1,7 @@
+./.gitignore
+/bower_components
+/typings
+/node_modules
+*.js
+.env
+npm-debug.log

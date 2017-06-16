@@ -1,0 +1,22 @@
+<_forEntity_>
+./src/com/services/<_entity.name:firstCap_>Service.java
+package com.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.entities.<_entity.name:firstCap_>;
+
+public class <_entity.name:firstCap_>Service {
+
+	private static List<<_entity.name:firstCap_>> <_entity.name_>s = new ArrayList<<_entity.name:firstCap_>>();
+
+	public static <_entity.name:firstCap_> create(<_entity.name:firstCap_> <_entity.name_>) {
+		<_entity.name_>s.add(<_entity.name_>);
+		return <_entity.name_>;
+	}
+
+	public static List<<_entity.name:firstCap_>> getAll() {
+		return <_entity.name_>s;
+	}
+}

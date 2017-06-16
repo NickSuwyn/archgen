@@ -1,0 +1,5 @@
+./ngApp/views/home.html
+<h2>Home</h2>
+<p>
+    {{controller.message}}
+</p>
