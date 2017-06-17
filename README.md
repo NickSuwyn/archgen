@@ -144,5 +144,45 @@ Each archetype is simply a folder with a bunch of .txt files defining the projec
 - Entity files are templates that define a file that will be created for each entity defined in the projects descriptor.json file.
 - Static files are only created once in a project; these files are generally things such as an index.html or config file, where multiple copies don't really make sense. Note that static file templates can still have template variables in them, so the text is not truly *static* in the traditional sense, the quantity of output files from that template file is simply static in that it is always one.
 
+Below is an image showing the contents of the mean-ts archetype:
+
+![mean-ts Contents](/assets/meantsContents.png)
+
+Notice how they are all just .txt files, except for the README.md, which **every archetype should have**.
+
+Here is an example of a static template file:
+
+![Static Template File](/assets/staticExample.png)
+This file will only be created once in a project generated from the mean-ts archetype, but its content will differ from project to project based on the descriptor.json ran against the archetype. The first line of this template file is the address this file will be created at relative to the project root directory. We will go into further detail on template syntax rules a little further down.
+
+Below is an example of an entity template file:
+
+![Entity Template File](/assets/entityExample.png)
+This file will be generated for each entity described in the descriptor.json file. Note that you can tell the difference between and entity file and a static file by the first line of the file. Entity files will contain ```<_forEntity_>``` as the first line and the file address as the second line, while static files have the file address as the first line.
+
+### Different Variable Levels
+Archgen has three different tiers of variables that can be used in an archetype, and each has a different level of scope. The three variable tiers, starting from the widest scope, are:
+- Project Level Variables: can be used anywhere.
+- Entity Level Variables: can be used in entity template files or within entity loops in static and entity template files.
+- and Property Level Variables: can only be used in prop loops inside of an entity template file.
+
+### Templating Syntax
+Archgen uses a unique xml-like syntax for defining template variables and constructs. Rather than just opening and closing elements with ```<``` and ```>```, archgen uses ```<_``` and ```_>``` to avoid conflicting with HTML and other XML configuration files.
+
+Below is a list of examples of how to use different archgen templating constructs.
+- To insert a project level variable use ```<_variableName_>```
+- To declare an enity template file place ```<_forEntity_>``` at the first line of the template file.
+- To insert an entity level variable in and entity file or within an entity loop use ```<_entity.variableName_>```
+- To insert a property level variable in a prop loop use ```<_prop.variableName_>```
+- To create an entity loop, use ```<_forEntity_>``` on any line other than the first. Terminiate the loop with ```<_endForEntity_>```. **Make sure there are no white spaces preceding the forEntity and endForEntity commands; they should be at the very beginning of the line and the only thing on the line**.
+- Prop loops follow all the same rules as entity loops with the additional rule that they can only exist in an entity file. The syntax for opening and closing a prop loop is ```<_forProp_>``` and ```<_endForProp_>```.
+
 ## Future Plans
 Currently all the archetypes are stored on GitHub with this package. The problem this presents is that any time new archetypes are created a new release of the package has to be published to npm in order for users to have access to the new archetypes without manually downloading and placing them into their npm folder. In the near future I will either find a better way to store archetypes or create an archetype repository app myself. Either way, I will build an *add* command that will install new archetypes by name so that I don't have to do a new release for each new archetype, and so that users can simply install the additional archetypes they want.
+
+## Issues and Bugs
+Please report issues here:
+[https://github.com/NickSuwyn/archgen/issues](https://github.com/NickSuwyn/archgen/issues)
+
+Also, feel free to contribute to fix issues and make archgen better!
+[https://github.com/NickSuwyn/archgen](https://github.com/NickSuwyn/archgen)
