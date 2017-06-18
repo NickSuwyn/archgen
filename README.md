@@ -56,10 +56,10 @@ In this tutorial, we will use the mean-ts archetype to generate a full stack cru
 
 - Create new directory for your project.
 
-![Create New Directory](https://github.com/NickSuwyn/archgen/blob/master/assets/createNewDirectory.png)
+![Create New Directory](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/createNewDirectory.png)
 - Inside the new directory, create the file descriptor.json.
 
-![Descriptor.json](https://github.com/NickSuwyn/archgen/blob/master/assets/descriptor.png)
+![Descriptor.json](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/descriptor.png)
 - Choose the archetype you want to use (we will use mean-ts for this tutorial) and write a JSON descriptor that implements the variables for that archetype.
 
 ```json
@@ -143,11 +143,11 @@ $ archgen mean-ts
 
 - Your console will output the files it is writing and you should see something similar to the following:
 
-![Output](https://github.com/NickSuwyn/archgen/blob/master/assets/output.png)
+![Output](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/output.png)
 
 - You should now have all the files generated for your project.
 
-![Files Generated](https://github.com/NickSuwyn/archgen/blob/master/assets/filesGenerated.png)
+![Files Generated](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/filesGenerated.png)
 
 - For the mean-ts archetype we now need to run ```npm install```, ```bower install```, and ```tsc``` per the mean-ts README.md instructions. After running these commands we should be able to run ```npm start``` to run the project.
 
@@ -162,18 +162,18 @@ Each archetype is simply a folder with a bunch of .txt files defining the projec
 
 Below is an image showing the contents of the mean-ts archetype:
 
-![mean-ts Contents](https://github.com/NickSuwyn/archgen/blob/master/assets/meantsContents.png)
+![mean-ts Contents](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/meantsContents.png)
 
 Notice how they are all just .txt files, except for the README.md, which **every archetype should have**.
 
 Here is an example of a static template file:
 
-![Static Template File](https://github.com/NickSuwyn/archgen/blob/master/assets/staticExample.png)
+![Static Template File](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/staticExample.png)
 This file will only be created once in a project generated from the mean-ts archetype, but its content will differ from project to project based on the descriptor.json ran against the archetype. The first line of this template file is the address this file will be created at relative to the project root directory. We will go into further detail on template syntax rules a little further down.
 
 Below is an example of an entity template file:
 
-![Entity Template File](https://github.com/NickSuwyn/archgen/blob/master/assets/entityExample.png)
+![Entity Template File](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/entityExample.png)
 This file will be generated for each entity described in the descriptor.json file. Note that you can tell the difference between and entity file and a static file by the first line of the file. Entity files will contain ```<_forEntity_>``` as the first line and the file address as the second line, while static files have the file address as the first line.
 
 ### Different Variable Levels
