@@ -56,7 +56,7 @@ In this tutorial, we will use the mean-ts archetype to generate a full stack cru
 
 - Create new directory for your project.
 
-![Create New Directory](./assets/createNewDirectory.png)
+![Create New Directory](assets/createNewDirectory.PNG?raw=true)
 - Inside the new directory, create the file descriptor.json.
 
 ![Descriptor.json](assets/descriptor.png)
