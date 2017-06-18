@@ -56,10 +56,10 @@ In this tutorial, we will use the mean-ts archetype to generate a full stack cru
 
 - Create new directory for your project.
 
-![Create New Directory](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/createNewDirectory.png)
+![Create New Directory](./assets/createNewDirectory.png)
 - Inside the new directory, create the file descriptor.json.
 
-![Descriptor.json](https://raw.githubusercontent.com/NickSuwyn/archgen/master/assets/descriptor.png)
+![Descriptor.json](assets/descriptor.png)
 - Choose the archetype you want to use (we will use mean-ts for this tutorial) and write a JSON descriptor that implements the variables for that archetype.
 
 ```json
