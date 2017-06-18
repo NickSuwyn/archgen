@@ -9,6 +9,7 @@
 [Bugs](#bugs)
 
 <a name="install"/>
+
 ## Install
 
 ```sh
