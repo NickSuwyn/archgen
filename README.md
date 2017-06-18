@@ -17,6 +17,7 @@ $ npm install -g archgen
 ```
 
 <a name="usage"/>
+
 ## Usage
 
 Create an empty directory that will serve as the root of your project and then create descriptor.json in that directory. In the descriptor.json file create the project descriptor JSON object. This descriptor should describe the entities you wish to initialize your project with. The layout for the descriptor is as follows:
@@ -49,15 +50,16 @@ $ archgen [archetype]
 Each archetype should contain a README.md that defines the variables required to generate a project from that archetype. Note that if you do not define all required variables for a given archetype, archgen will fail to create your project. To view the available archetypes visit [github.com/NickSuwyn/archgen/tree/master/bin/archetypes](https://github.com/NickSuwyn/archgen/tree/master/bin/archetypes). If you wish to build your own archetypes, or contribute archetypes to the repository, follow the section entitled *Custom Archetypes* below.
 
 <a name="usagetutorial"/>
+
 ## Example of Usage Tutorial
 In this tutorial, we will use the mean-ts archetype to generate a full stack crud application that contains User, Post, and Comment entities for a social-media-like app.
 
 - Create new directory for your project.
 
-![Create New Directory](./assets/createNewDirectory.png)
+![Create New Directory](https://github.com/NickSuwyn/archgen/blob/master/assets/createNewDirectory.png)
 - Inside the new directory, create the file descriptor.json.
 
-![Descriptor.json](./assets/descriptor.png)
+![Descriptor.json](https://github.com/NickSuwyn/archgen/blob/master/assets/descriptor.png)
 - Choose the archetype you want to use (we will use mean-ts for this tutorial) and write a JSON descriptor that implements the variables for that archetype.
 
 ```json
@@ -141,15 +143,16 @@ $ archgen mean-ts
 
 - Your console will output the files it is writing and you should see something similar to the following:
 
-![Output](./assets/output.png)
+![Output](https://github.com/NickSuwyn/archgen/blob/master/assets/output.png)
 
 - You should now have all the files generated for your project.
 
-![Files Generated](./assets/filesGenerated.png)
+![Files Generated](https://github.com/NickSuwyn/archgen/blob/master/assets/filesGenerated.png)
 
 - For the mean-ts archetype we now need to run ```npm install```, ```bower install```, and ```tsc``` per the mean-ts README.md instructions. After running these commands we should be able to run ```npm start``` to run the project.
 
 <a name="customarchetypes"/>
+
 ## Custom Archetypes
 If you want to create your own archetype, either for personal use or to add it to the repository for everyone to benefit, just follow the below documentation.
 ### Archetype Files and Structure
@@ -159,18 +162,18 @@ Each archetype is simply a folder with a bunch of .txt files defining the projec
 
 Below is an image showing the contents of the mean-ts archetype:
 
-![mean-ts Contents](./assets/meantsContents.png)
+![mean-ts Contents](https://github.com/NickSuwyn/archgen/blob/master/assets/meantsContents.png)
 
 Notice how they are all just .txt files, except for the README.md, which **every archetype should have**.
 
 Here is an example of a static template file:
 
-![Static Template File](./assets/staticExample.png)
+![Static Template File](https://github.com/NickSuwyn/archgen/blob/master/assets/staticExample.png)
 This file will only be created once in a project generated from the mean-ts archetype, but its content will differ from project to project based on the descriptor.json ran against the archetype. The first line of this template file is the address this file will be created at relative to the project root directory. We will go into further detail on template syntax rules a little further down.
 
 Below is an example of an entity template file:
 
-![Entity Template File](./assets/entityExample.png)
+![Entity Template File](https://github.com/NickSuwyn/archgen/blob/master/assets/entityExample.png)
 This file will be generated for each entity described in the descriptor.json file. Note that you can tell the difference between and entity file and a static file by the first line of the file. Entity files will contain ```<_forEntity_>``` as the first line and the file address as the second line, while static files have the file address as the first line.
 
 ### Different Variable Levels
@@ -266,6 +269,7 @@ The last step of creating the archetype would be to add a README.md that follows
 And that's it!
 
 <a name="futureplans"/>
+
 ## Future Plans
 Currently all the archetypes are stored on GitHub with this package. The problem this presents is that any time new archetypes are created a new release of the package has to be published to npm in order for users to have access to the new archetypes without manually downloading and placing them into their npm folder. In the near future I will either find a better way to store archetypes or create an archetype repository app myself. Either way, I will build an *add* command that will install new archetypes by name so that I don't have to do a new release for each new archetype, and so that users can simply install the additional archetypes they want.
 
@@ -274,6 +278,7 @@ I will add better error handling and messages soon.
 I will refactor the code soon to clean it up and make it better suited for others to make contributions.
 
 <a name="bugs"/>
+
 ## Issues and Bugs
 Please report issues here:
 [https://github.com/NickSuwyn/archgen/issues](https://github.com/NickSuwyn/archgen/issues)
