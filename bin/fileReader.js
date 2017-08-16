@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-
 let fs = require('file-system');
 let parser = require('./parser');
 let stringUtil = require('./stringUtil');
@@ -10,7 +9,19 @@ let outFiles = [];
 let tagEx = /<_(\w*)_>/;
 let propEx = /<_prop\.([\w|:]*)_>/;
 let entityEx = /<_entity\.([\w|:]*)_>/;
-let dir = process.argv[1].substr(0, process.argv[1].length - 13) + '\\\\archetypes\\\\' + process.argv[2] + '\\\\';
+let dir;
+
+if (fs.existsSync(process.argv[1].substr(0, process.argv[1].length - 13) + '\\\\archetypes\\\\' + process.argv[2] + '\\\\')) {
+  dir = process.argv[1].substr(0, process.argv[1].length - 13) + '\\\\archetypes\\\\' + process.argv[2] + '\\\\';
+}
+else if (fs.existsSync('/usr/lib/node_modules/archgen/bin/archetypes/' + process.argv[2] + '/')) {
+  dir = '/usr/lib/node_modules/archgen/bin/archetypes/' + process.argv[2] + '/';
+}
+else if (fs.existsSync('/usr/local/lib/node_modules/archgen/bin/archetypes/' + process.argv[2] + '/')) {
+  dir = '/usr/local/lib/node_modules/archgen/bin/archetypes/' + process.argv[2] + '/';
+}
+
+
 
 fs.readdir('./', (err, files) => {
   files.forEach(file => {
@@ -21,6 +32,7 @@ fs.readdir('./', (err, files) => {
 });
 
 fs.readdir(dir, (err, files) => {
+  console.log(process.argv[1]);
   files.forEach(file => {
     if(file.includes('.txt')) {
       file = dir + file;
