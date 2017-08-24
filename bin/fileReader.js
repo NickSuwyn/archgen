@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#! /usr/bin/env node 
 let fs = require('file-system');
 let parser = require('./parser');
 let stringUtil = require('./stringUtil');
