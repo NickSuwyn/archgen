@@ -1,0 +1,109 @@
+<_forEntity_>
+./src/main/java/com/<_name_>/<_entity.name_>/<_entity.name:firstCap_>ServiceImpl.java
+package com.<_name_>.<_entity.name_>;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("<_entity.name:firstCap_>Service")
+public class <_entity.name:firstCap_>ServiceImpl implements <_entity.name:firstCap_>Service {
+
+	private static final Logger LOG = LoggerFactory.getLogger(<_entity.name:firstCap_>ServiceImpl.class);
+
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Default_JPA");
+
+	@Autowired
+	<_entity.name:firstCap_>Dao <_entity.name_>Dao;
+
+	public List<<_entity.name:firstCap_>Entity> getAll<_entity.name:firstCap_>s() {
+		List<<_entity.name:firstCap_>Entity> entityList = new ArrayList<<_entity.name:firstCap_>Entity>();
+		EntityManager em = emf.createEntityManager();
+		try {
+			entityList = <_entity.name_>Dao.getAll<_entity.name:firstCap_>s(em);
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to get <_entity.name:firstCap_>s: ", e);
+		} finally {
+			em.close();
+		}
+		return entityList;
+	}
+
+	public <_entity.name:firstCap_>Entity get<_entity.name:firstCap_>(int <_entity.name_>Id) {
+		<_entity.name:firstCap_>Entity found<_entity.name:firstCap_> = new <_entity.name:firstCap_>Entity();
+		EntityManager em = emf.createEntityManager();
+		try {
+			found<_entity.name:firstCap_> = <_entity.name_>Dao.get<_entity.name:firstCap_>(em, <_entity.name_>Id);
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to get <_entity.name:firstCap_>: {}", <_entity.name_>Id, e);
+		} finally {
+			em.close();
+		}
+		return found<_entity.name:firstCap_>;
+	}
+
+	public <_entity.name:firstCap_>Entity create<_entity.name:firstCap_>(<_entity.name:firstCap_>Entity <_entity.name_>) {
+		<_entity.name:firstCap_>Entity created<_entity.name:firstCap_> = new <_entity.name:firstCap_>Entity();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			created<_entity.name:firstCap_> = <_entity.name_>Dao.create<_entity.name:firstCap_>(em, <_entity.name_>);
+			transaction.commit();
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to create <_entity.name:firstCap_>: {}", <_entity.name_>, e);
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+		}
+		return created<_entity.name:firstCap_>;
+	}
+
+	public <_entity.name:firstCap_>Entity update<_entity.name:firstCap_>(<_entity.name:firstCap_>Entity <_entity.name_>) {
+		<_entity.name:firstCap_>Entity updated<_entity.name:firstCap_> = new <_entity.name:firstCap_>Entity();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			updated<_entity.name:firstCap_> = <_entity.name_>Dao.update<_entity.name:firstCap_>(em, <_entity.name_>);
+			transaction.commit();
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to update <_entity.name:firstCap_>: {}", <_entity.name_>, e);
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+		}
+		return updated<_entity.name:firstCap_>;
+	}
+
+	public <_entity.name:firstCap_>Entity delete<_entity.name:firstCap_>(int <_entity.name_>Id) {
+		<_entity.name:firstCap_>Entity deleted<_entity.name:firstCap_> = new <_entity.name:firstCap_>Entity();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			deleted<_entity.name:firstCap_> = <_entity.name_>Dao.delete<_entity.name:firstCap_>(em, <_entity.name_>Id);
+			transaction.commit();
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to delete <_entity.name:firstCap_>: {}", <_entity.name_>Id, e);
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+		}
+		return deleted<_entity.name:firstCap_>;
+	}
+
+}

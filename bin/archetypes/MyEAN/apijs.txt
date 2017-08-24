@@ -1,0 +1,49 @@
+<_forEntity_>
+./api/<_entity.name_>.js
+import * as express from 'express';
+import <_entity.name:firstCap_> from '../dao/<_entity.name:firstCap_>Entity';
+
+let router = express.Router();
+
+router.get('/', (req, res) => {
+  <_entity.name:firstCap_>.find()
+    .then((<_entity.name_>s) => res.json(<_entity.name_>s))
+    .catch((err) => res.json(err));
+});
+
+router.get('/:id', (req, res) => {
+  <_entity.name:firstCap_>.find({id: req.params.id})
+    .then((<_entity.name_>s) => res.json(<_entity.name_>s ? <_entity.name_>s[0] : null))
+    .catch((err) => res.json(err));
+})
+
+router.post('/', (req, res) => {
+  let <_entity.name_> = new <_entity.name:firstCap_>();
+<_forProp_>
+  <_entity.name_>.<_prop.name_> = req.body.<_prop.name_>;
+<_endForProp_>
+  <_entity.name_>.save()
+    .then((new<_entity.name:firstCap_>) => res.json(new<_entity.name:firstCap_>))
+    .catch((err) => res.json(err));
+});
+
+router.put('/:id', (req, res) => {
+  let <_entity.name_> = new <_entity.name:firstCap_>();
+  <_entity.name_>.id = req.params.id;
+<_forProp_>
+  <_entity.name_>.<_prop.name_> = req.body.<_prop.name_>;
+<_endForProp_>
+  <_entity.name_>.save()
+    .then((<_entity.name_>) => res.json(<_entity.name_>))
+    .catch((err) => res.json(err));
+});
+
+router.delete('/:id', (req, res) => {
+  let <_entity.name_> = new <_entity.name:firstCap_>();
+  <_entity.name_>.id = req.params.id;
+  <_entity.name_>.delete()
+    .then((<_entity.name_>) => res.json(<_entity.name_>))
+    .catch((err) => res.json(err));
+});
+
+export default router;

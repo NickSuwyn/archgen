@@ -1,0 +1,142 @@
+./src/main/java/com/<_name_>/util/Auth.java
+package com.<_name_>.util;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.servlet.http.HttpServletRequest;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.<_name_>.user.UserEntity;
+
+public class Auth {
+	private final String SECRET = "poodles";
+	private final int TOKEN_VALID_HOURS = 8;
+	private final String ISSUER = "auth0";
+	private final String USERNAME = "username";
+	private final String ROLE = "role";
+	private final String ADMIN = "ADMIN";
+	private final String AUTH = "Authorization";
+	private final String ALGORITHM = "PBKDF2WithHmacSHA1";
+	private final String BEARER = "Bearer ";
+	private final String ID = "id";
+	private final Random RANDOM = new SecureRandom();
+	private final int ITERATIONS = 10000;
+	private final int KEY_LENGTH = 256;
+	private Algorithm algorithmHS;
+	private static Auth singleton;
+
+	private Auth() throws IllegalArgumentException, UnsupportedEncodingException {
+		algorithmHS = Algorithm.HMAC256(SECRET);
+	}
+
+	public static Auth getAuth() throws IllegalArgumentException, UnsupportedEncodingException {
+		if (singleton == null) {
+			return new Auth();
+		}
+		return singleton;
+	}
+
+	public String generateToken(UserEntity user) {
+		Calendar calendar = Calendar.getInstance();
+		Date current = new Date();
+		calendar.setTime(current);
+		calendar.add(Calendar.HOUR_OF_DAY, TOKEN_VALID_HOURS);
+		return JWT.create()
+				.withIssuer(ISSUER)
+				.withClaim(USERNAME, user.getUserName())
+				.withClaim(ROLE, user.getRole())
+				.withClaim(ID, user.getUserId())
+				.withIssuedAt(current)
+				.withNotBefore(current)
+				.withExpiresAt(calendar.getTime())
+				.sign(algorithmHS);
+	}
+
+	public boolean isAdmin(HttpServletRequest request) {
+		try {
+			return isValidToken(request) && hasRole(decodeToken(getTokenFromRequest(request)), ADMIN);
+		} catch (JWTVerificationException | UnauthorizedException exception) {
+			return false;
+		}
+	}
+
+	public boolean isValidToken(HttpServletRequest request) {
+		try {
+			decodeToken(getTokenFromRequest(request));
+			return true;
+		} catch (UnauthorizedException | NullPointerException exception) {
+			return false;
+		} catch (JWTVerificationException exception) {
+			throw exception;
+		}
+	}
+
+	public String getNextSalt() {
+		byte[] salt = new byte[16];
+		RANDOM.nextBytes(salt);
+		return new String(salt);
+	}
+
+	public String hash(char[] password, byte[] salt) {
+		PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
+		Arrays.fill(password, Character.MIN_VALUE);
+		try {
+			SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);
+			return new String(skf.generateSecret(spec).getEncoded());
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			throw new AssertionError("Error occured while hashing a password: " + e.getMessage(), e);
+		} finally {
+			spec.clearPassword();
+		}
+	}
+
+	public boolean isExpectedPassword(char[] password, byte[] salt, byte[] expectedHash) {
+		byte[] pwdHash = hash(password, salt).getBytes();
+		Arrays.fill(password, Character.MIN_VALUE);
+		if (pwdHash.length != expectedHash.length)
+			return false;
+		for (int i = 0; i < pwdHash.length; i++) {
+			if (pwdHash[i] != expectedHash[i])
+				return false;
+		}
+		return true;
+	}
+
+	public String getUserIdFromToken(String token) {
+		return getClaimStringFromToken(token, ID);
+	}
+
+	private String getClaimStringFromToken(String token, String claim) {
+		DecodedJWT jwt = decodeToken(token);
+		return jwt.getClaim(claim).asString();
+	}
+
+	private DecodedJWT decodeToken(String token) throws JWTVerificationException {
+		return JWT.require(algorithmHS).withIssuer(ISSUER).build().verify(token);
+	}
+
+	private boolean hasRole(DecodedJWT jwt, String role) {
+		return jwt.getClaim(ROLE).asString().toUpperCase().equals(role.toUpperCase());
+	}
+
+	private String getTokenFromRequest(HttpServletRequest request) throws UnauthorizedException {
+		String header = request.getHeader(AUTH);
+		if (header == null) {
+			throw new UnauthorizedException("Request contains no token.");
+		}
+		return header.replaceAll(BEARER, "");
+	}
+
+}

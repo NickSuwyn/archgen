@@ -1,0 +1,19 @@
+<_forEntity_>
+./src/main/java/com/<_name_>/<_entity.name_>/<_entity.name:firstCap_>Service.java
+package com.<_name_>.<_entity.name_>;
+
+import java.util.List;
+
+public interface <_entity.name:firstCap_>Service {
+
+	public List<<_entity.name:firstCap_>Entity> getAll<_entity.name:firstCap_>s();
+
+	public <_entity.name:firstCap_>Entity get<_entity.name:firstCap_>(int <_entity.name_>Id);
+
+	public <_entity.name:firstCap_>Entity create<_entity.name:firstCap_>(<_entity.name:firstCap_>Entity <_entity.name_>);
+
+	public <_entity.name:firstCap_>Entity update<_entity.name:firstCap_>(<_entity.name:firstCap_>Entity <_entity.name_>);
+
+	public <_entity.name:firstCap_>Entity delete<_entity.name:firstCap_>(int <_entity.name_>Id);
+
+}

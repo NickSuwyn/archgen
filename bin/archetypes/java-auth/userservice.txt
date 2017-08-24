@@ -1,0 +1,18 @@
+./src/main/java/com/<_name_>/user/UserService.java
+package com.<_name_>.user;
+
+import java.util.List;
+
+public interface UserService {
+
+	public List<UserEntity> getAllUsers();
+
+	public UserEntity getUser(UserEntity user);
+
+	public UserEntity createUser(UserEntity user);
+
+	public UserEntity updateUser(UserEntity user);
+
+	public UserEntity deleteUser(int userId);
+
+}

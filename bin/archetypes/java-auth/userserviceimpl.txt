@@ -1,0 +1,115 @@
+./src/main/java/com/<_name_>/user/UserServiceImpl.java
+package com.<_name_>.user;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.<_name_>.util.Auth;
+
+@Service("UserService")
+public class UserServiceImpl implements UserService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Default_JPA");
+
+	@Autowired
+	UserDao userDao;
+
+	public List<UserEntity> getAllUsers() {
+		List<UserEntity> entityList = new ArrayList<UserEntity>();
+		EntityManager em = emf.createEntityManager();
+		try {
+			entityList = userDao.getAllUsers(em);
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to get Users: ", e);
+		} finally {
+			em.close();
+		}
+		return entityList;
+	}
+
+	public UserEntity getUser(UserEntity user) {
+		UserEntity foundUser = new UserEntity();
+		EntityManager em = emf.createEntityManager();
+		try {
+			foundUser = userDao.getUser(em, user.getUserName(), user.getPassword());
+			if(foundUser != null) {
+				foundUser.setToken(Auth.getAuth().generateToken(foundUser));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+			LOG.error("Exception occured while trying to get User: {}", user.getUserName(), e);
+		} finally {
+			em.close();
+		}
+		return foundUser;
+	}
+
+	public UserEntity createUser(UserEntity user) {
+		UserEntity createdUser = new UserEntity();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			createdUser = userDao.createUser(em, user);
+			transaction.commit();
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to create User: {}", user, e);
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+		}
+		return createdUser;
+	}
+
+	public UserEntity updateUser(UserEntity user) {
+		UserEntity updatedUser = new UserEntity();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			updatedUser = userDao.updateUser(em, user);
+			transaction.commit();
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to update User: {}", user, e);
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+		}
+		return updatedUser;
+	}
+
+	public UserEntity deleteUser(int userId) {
+		UserEntity deletedUser = new UserEntity();
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		try {
+			transaction.begin();
+			deletedUser = userDao.deleteUser(em, userId);
+			transaction.commit();
+		} catch (Exception e) {
+			LOG.error("Exception occured while trying to delete User: {}", userId, e);
+		} finally {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			em.close();
+		}
+		return deletedUser;
+	}
+
+}

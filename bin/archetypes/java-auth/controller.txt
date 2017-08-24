@@ -1,0 +1,122 @@
+<_forEntity_>
+./src/main/java/com/<_name_>/<_entity.name_>/<_entity.name:firstCap_>Controller.java
+package com.<_name_>.<_entity.name_>;
+
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.<_name_>.util.Auth;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@CrossOrigin
+@Controller
+public class <_entity.name:firstCap_>Controller {
+
+	@Autowired
+	private <_entity.name:firstCap_>Service <_entity.name_>Service;
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>s", method = RequestMethod.GET)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Resource Not Found"),
+			@ApiResponse(code = 500, message = "Internal server error"),
+			@ApiResponse(code = 503, message = "NameOfService service not available") })
+	public ResponseEntity<Object> getAll<_entity.name:firstCap_>s(HttpServletRequest request)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		try {
+			if (Auth.getAuth().isValidToken(request)) {
+				return new ResponseEntity<Object>(<_entity.name_>Service.getAll<_entity.name:firstCap_>s(), HttpStatus.OK);
+			}
+			return new ResponseEntity<Object>("Unauthorized", HttpStatus.UNAUTHORIZED);
+		} catch (JWTVerificationException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>s/{<_entity.name_>Id}", method = RequestMethod.GET)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Resource Not Found"),
+			@ApiResponse(code = 500, message = "Internal server error"),
+			@ApiResponse(code = 503, message = "NameOfService service not available") })
+	public ResponseEntity<Object> get<_entity.name:firstCap_>(@PathVariable int <_entity.name_>Id, HttpServletRequest request)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		try {
+			if (Auth.getAuth().isValidToken(request)) {
+				return new ResponseEntity<Object>(<_entity.name_>Service.get<_entity.name:firstCap_>(<_entity.name_>Id), HttpStatus.OK);
+			}
+			return new ResponseEntity<Object>("Unauthorized", HttpStatus.UNAUTHORIZED);
+		} catch (JWTVerificationException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>s", method = RequestMethod.POST)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Resource Not Found"),
+			@ApiResponse(code = 500, message = "Internal server error"),
+			@ApiResponse(code = 503, message = "NameOfService service not available") })
+	public ResponseEntity<Object> create<_entity.name:firstCap_>(@RequestBody <_entity.name:firstCap_>Entity <_entity.name_>, HttpServletRequest request)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		try {
+			if (Auth.getAuth().isValidToken(request)) {
+				return new ResponseEntity<Object>(<_entity.name_>Service.create<_entity.name:firstCap_>(<_entity.name_>), HttpStatus.CREATED);
+			}
+			return new ResponseEntity<Object>("Unauthorized", HttpStatus.UNAUTHORIZED);
+		} catch (JWTVerificationException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>s", method = RequestMethod.PUT)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Resource Not Found"),
+			@ApiResponse(code = 500, message = "Internal server error"),
+			@ApiResponse(code = 503, message = "NameOfService service not available") })
+	public ResponseEntity<Object> update<_entity.name:firstCap_>(@RequestBody <_entity.name:firstCap_>Entity <_entity.name_>, HttpServletRequest request)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		try {
+			if (Auth.getAuth().isValidToken(request)) {
+				return new ResponseEntity<Object>(<_entity.name_>Service.update<_entity.name:firstCap_>(<_entity.name_>), HttpStatus.OK);
+			}
+			return new ResponseEntity<Object>("Unauthorized", HttpStatus.UNAUTHORIZED);
+		} catch (JWTVerificationException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/<_entity.name_>s/{<_entity.name_>Id}", method = RequestMethod.DELETE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Resource Not Found"),
+			@ApiResponse(code = 500, message = "Internal server error"),
+			@ApiResponse(code = 503, message = "NameOfService service not available") })
+	public ResponseEntity<Object> delete<_entity.name:firstCap_>(@PathVariable int <_entity.name_>Id, HttpServletRequest request)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		try {
+			if (Auth.getAuth().isValidToken(request)) {
+				return new ResponseEntity<Object>(<_entity.name_>Service.delete<_entity.name:firstCap_>(<_entity.name_>Id), HttpStatus.OK);
+			}
+			return new ResponseEntity<Object>(<_entity.name_>Service.delete<_entity.name:firstCap_>(<_entity.name_>Id), HttpStatus.OK);
+		} catch (JWTVerificationException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+}

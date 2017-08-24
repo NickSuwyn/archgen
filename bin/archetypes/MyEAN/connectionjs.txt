@@ -1,0 +1,22 @@
+./dao/connection.js
+import * as mysql from 'mysql';
+import dotenv from 'dotenv';
+dotenv.config();
+
+let connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DATABASE
+});
+
+connection.connect((error) => {
+  if(error) {
+    console.log('Error connecting to DB.');
+    console.log(error);
+    return;
+  }
+  console.log('Connection established.');
+});
+
+export default connection;

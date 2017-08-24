@@ -1,0 +1,20 @@
+<_forEntity_>
+./src/main/java/com/<_name_>/<_entity.name_>/<_entity.name:firstCap_>Dao.java
+package com.<_name_>.<_entity.name_>;
+
+import java.util.List;
+import javax.persistence.EntityManager;
+
+public interface <_entity.name:firstCap_>Dao {
+
+	public List<<_entity.name:firstCap_>Entity> getAll<_entity.name:firstCap_>s(EntityManager em);
+
+	public <_entity.name:firstCap_>Entity get<_entity.name:firstCap_>(EntityManager em, int <_entity.name_>Id);
+
+	public <_entity.name:firstCap_>Entity create<_entity.name:firstCap_>(EntityManager em, <_entity.name:firstCap_>Entity <_entity.name_>Entity);
+
+	public <_entity.name:firstCap_>Entity update<_entity.name:firstCap_>(EntityManager em, <_entity.name:firstCap_>Entity <_entity.name_>Entity);
+
+	public <_entity.name:firstCap_>Entity delete<_entity.name:firstCap_>(EntityManager em, int <_entity.name_>Id);
+
+}

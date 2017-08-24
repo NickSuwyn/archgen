@@ -1,6 +1,6 @@
 {
   "name": "archgen",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A code generation tool to reduce boiler plate coding.",
   "main": "fileReader.js",
   "scripts": {

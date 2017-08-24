@@ -1,0 +1,50 @@
+<_forEntity_>
+./src/main/java/com/<_name_>/<_entity.name_>/<_entity.name:firstCap_>Entity.java
+package com.<_name_>.<_entity.name_>;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="<_entity.name:firstCap_>")
+@NamedNativeQueries({
+	@NamedNativeQuery(name="getAll<_entity.name:firstCap_>s", query="SELECT * FROM <_entity.name:firstCap_>", resultClass=<_entity.name:firstCap_>Entity.class)
+})
+public class <_entity.name:firstCap_>Entity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="<_entity.name_>Id")
+	private int <_entity.name_>Id;
+
+<_forProp_>
+	@Column(name="<_prop.name_>")
+	private <_prop.type_> <_prop.name_>;
+<_endForProp_>
+
+
+	public void set<_entity.name:firstCap_>Id(int <_entity.name_>Id) {
+		this.<_entity.name_>Id = <_entity.name_>Id;
+	}
+
+	public int get<_entity.name:firstCap_>Id() {
+		return <_entity.name_>Id;
+	}
+
+<_forProp_>
+	public void set<_prop.name:firstCap_>(<_prop.type_> <_prop.name_>) {
+		this.<_prop.name_> = <_prop.name_>;
+	}
+
+	public <_prop.type_> get<_prop.name:firstCap_>() {
+		return <_prop.name_>;
+	}
+<_endForProp_>
+
+}

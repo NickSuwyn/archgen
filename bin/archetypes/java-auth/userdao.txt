@@ -1,0 +1,20 @@
+./src/main/java/com/<_name_>/user/UserDao.java
+package com.<_name_>.user;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import javax.persistence.EntityManager;
+
+public interface UserDao {
+
+	public List<UserEntity> getAllUsers(EntityManager em);
+
+	public UserEntity getUser(EntityManager em, String username, String password) throws IllegalArgumentException, UnsupportedEncodingException;
+
+	public UserEntity createUser(EntityManager em, UserEntity userEntity) throws IllegalArgumentException, UnsupportedEncodingException;
+
+	public UserEntity updateUser(EntityManager em, UserEntity userEntity);
+
+	public UserEntity deleteUser(EntityManager em, int userId);
+
+}

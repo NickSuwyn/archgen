@@ -1,0 +1,45 @@
+<_forEntity_>
+./src/main/java/com/<_name_>/<_entity.name_>/<_entity.name:firstCap_>DaoImpl.java
+package com.<_name_>.<_entity.name_>;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository("<_entity.name_>Dao")
+public class <_entity.name:firstCap_>DaoImpl implements <_entity.name:firstCap_>Dao{
+
+	public List<<_entity.name:firstCap_>Entity> getAll<_entity.name:firstCap_>s(EntityManager em) {
+		List<<_entity.name:firstCap_>Entity> entityList = new ArrayList<<_entity.name:firstCap_>Entity>();
+		Query query = em.createNamedQuery("getAll<_entity.name:firstCap_>s");
+		entityList = query.getResultList();
+		return entityList;
+	}
+
+	public <_entity.name:firstCap_>Entity get<_entity.name:firstCap_>(EntityManager em, int <_entity.name_>Id) {
+		return em.find(<_entity.name:firstCap_>Entity.class, <_entity.name_>Id);
+	}
+
+	public <_entity.name:firstCap_>Entity create<_entity.name:firstCap_>(EntityManager em, <_entity.name:firstCap_>Entity <_entity.name_>Entity) {
+		em.persist(<_entity.name_>Entity);
+		return <_entity.name_>Entity;
+	}
+
+	public <_entity.name:firstCap_>Entity update<_entity.name:firstCap_>(EntityManager em, <_entity.name:firstCap_>Entity <_entity.name_>Entity) {
+		<_entity.name:firstCap_>Entity found<_entity.name:firstCap_>Entity = em.find(<_entity.name:firstCap_>Entity.class, <_entity.name_>Entity.get<_entity.name:firstCap_>Id());
+		found<_entity.name:firstCap_>Entity.set<_entity.name:firstCap_>Id(<_entity.name_>Entity.get<_entity.name:firstCap_>Id());
+<_forProp_>
+		found<_entity.name:firstCap_>Entity.set<_prop.name:firstCap_>(<_entity.name_>Entity.get<_prop.name:firstCap_>());
+<_endForProp_>
+		return found<_entity.name:firstCap_>Entity;
+	}
+
+	public <_entity.name:firstCap_>Entity delete<_entity.name:firstCap_>(EntityManager em, int <_entity.name_>Id) {
+		<_entity.name:firstCap_>Entity <_entity.name_>Entity = em.find(<_entity.name:firstCap_>Entity.class, <_entity.name_>Id);
+		em.remove(<_entity.name_>Entity);
+		return <_entity.name_>Entity;
+	}
+
+}

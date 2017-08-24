@@ -1,0 +1,74 @@
+<_forEntity_>
+./dao/<_entity.name:firstCap_>Entity.js
+import connection from './connection';
+
+export default class <_entity.name:firstCap_> {
+  constructor() {
+    this.id;
+<_forProp_>
+    this.<_prop.name_>;
+<_endForProp_>
+  }
+
+  save() {
+    let sql = '';
+    if(this.id) {
+      sql = 'UPDATE <_entity.name_> SET' +
+<_forProp_>
+        ' <_prop.name_> = \'' + this.<_prop.name_> + '\',' +
+<_endForProp_>
+        '';
+        sql = sql.slice(0, -1);
+        sql += ' WHERE id = \'' + this.id + '\'';
+    } else {
+    sql = 'INSERT INTO <_entity.name_> (' +
+<_forProp_>
+      '<_prop.name_>,' +
+<_endForProp_>
+      '';
+      sql = sql.slice(0, -1);
+      sql += ') VALUES (' +
+<_forProp_>
+      '\'' + this.<_prop.name_> + '\',' +
+<_endForProp_>
+      '';
+      sql = sql.slice(0, -1);
+      sql += ')';
+    }
+    return _query(sql);
+  }
+
+  delete () {
+    let sql = 'DELETE FROM <_entity.name_> WHERE id = ' + this.id;
+    return _query(sql);
+  }
+
+  static find(where) {
+    let sql = 'SELECT * FROM <_entity.name_>';
+
+    if(where) {
+      sql += ' WHERE';
+      let j = 0;
+
+      for(let i in where) {
+          sql += ' ' + i + ' = \'' + where[i] + '\'';
+          if(j != Object.keys(where).length - 1) {
+            sql += ' AND'
+          }
+          j++;
+      }
+    }
+
+    return _query(sql);
+  }
+
+}
+
+function _query(sql) {
+  return new Promise(function(resolve, reject) {
+    connection.query(sql, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+}

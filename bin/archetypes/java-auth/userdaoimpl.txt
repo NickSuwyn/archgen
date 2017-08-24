@@ -1,0 +1,58 @@
+./src/main/java/com/<_name_>/user/UserDaoImpl.java
+package com.<_name_>.user;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import org.springframework.stereotype.Repository;
+
+import com.<_name_>.util.Auth;
+
+@Repository("UserDao")
+public class UserDaoImpl implements UserDao {
+
+	public UserEntity getUser(EntityManager em, String username, String password)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		List<UserEntity> users = new ArrayList<UserEntity>();
+		Query query = em.createNamedQuery("getUser");
+		query.setParameter(1, username);
+		users = query.getResultList();
+		UserEntity user = users.isEmpty() ? null : users.get(0);
+		if (user == null || !Auth.getAuth().isExpectedPassword(password.toCharArray(), user.getSalt().getBytes(),
+				user.getPassword().getBytes())) {
+			return null;
+		}
+		return user;
+	}
+
+	public List<UserEntity> getAllUsers(EntityManager em) {
+		List<UserEntity> entityList = new ArrayList<UserEntity>();
+		Query query = em.createNamedQuery("getAllUsers");
+		entityList = query.getResultList();
+		return entityList;
+	}
+
+	public UserEntity createUser(EntityManager em, UserEntity userEntity)
+			throws IllegalArgumentException, UnsupportedEncodingException {
+		Auth auth = Auth.getAuth();
+		userEntity.setSalt(auth.getNextSalt());
+		userEntity.setPassword(auth.hash(userEntity.getPassword().toCharArray(), userEntity.getSalt().getBytes()));
+		em.persist(userEntity);
+		return userEntity;
+	}
+
+	public UserEntity updateUser(EntityManager em, UserEntity userEntity) {
+		UserEntity foundUserEntity = em.find(UserEntity.class, userEntity.getUserId());
+		foundUserEntity.setPassword(userEntity.getPassword());
+		return foundUserEntity;
+	}
+
+	public UserEntity deleteUser(EntityManager em, int userId) {
+		UserEntity userEntity = em.find(UserEntity.class, userId);
+		em.remove(userEntity);
+		return userEntity;
+	}
+
+}
