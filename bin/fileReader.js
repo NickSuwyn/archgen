@@ -78,11 +78,11 @@ function evaluateFileLines(fileLines) {
 }
 
 function processLines(fileLines, i) {
-  if (fileLines[i] == '<_forEntity_>') {
+  if (fileLines[i] === '<_forEntity_>') {
     let j = parseInt(i) + 1;
     let foundEnd = false;
     while (!foundEnd) {
-      if (fileLines[j] == '<_endForEntity_>') {
+      if (fileLines[j] === '<_endForEntity_>') {
         foundEnd = true;
       }
       j++;
