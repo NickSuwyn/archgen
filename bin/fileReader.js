@@ -1,14 +1,14 @@
 #! /usr/bin/env node 
-let fs = require('file-system');
-let parser = require('./parser');
-let stringUtil = require('./stringUtil');
+const fs = require('file-system');
+const parser = require('./parser');
+const stringUtil = require('./stringUtil');
 
-let fileDirectories = [];
+const fileDirectories = [];
 let descriptor;
-let outFiles = [];
-let tagEx = /<_(\w*)_>/;
-let propEx = /<_prop\.([\w|:]*)_>/;
-let entityEx = /<_entity\.([\w|:]*)_>/;
+const outFiles = [];
+const tagEx = /<_(\w*)_>/;
+const propEx = /<_prop\.([\w|:]*)_>/;
+const entityEx = /<_entity\.([\w|:]*)_>/;
 let dir;
 
 if (fs.existsSync(process.argv[1].substr(0, process.argv[1].length - 13) + '\\\\archetypes\\\\' + process.argv[2] + '\\\\')) {
@@ -24,7 +24,7 @@ else if (fs.existsSync('/usr/local/lib/node_modules/archgen/bin/archetypes/' + p
 
 
 //check if user entered argument
-if(process.argv[2] == 'install' || process.argv[2] == 'default') {
+if(process.argv[2] === 'install' || process.argv[2] === 'default') {
   require('./options')[process.argv[2]]();
 } else {
   fs.readdir('./', (err, files) => {
@@ -39,10 +39,10 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
     files.forEach(file => {
       if(file.includes('.txt')) {
         file = dir + file;
-        let curFile = fs.readFileSync(file, 'utf8');
-        let fileLines = parser.splitByLine(curFile);
+        const curFile = fs.readFileSync(file, 'utf8');
+        const fileLines = parser.splitByLine(curFile);
 
-        if(fileLines[0] == '<_forEntity_>') {
+        if(fileLines[0] === '<_forEntity_>') {
           for(let entity of descriptor.entities) {
             outFiles.push(evaluateFileLines(evaluateForEntity(fileLines.slice(1, fileLines.length), entity)));
           }
@@ -64,16 +64,13 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
   });
 
   function evaluateForPath(path) {
-    let directory = [];
+    const directory = [];
     directory.push(path);
     return evaluateFileLines(directory)[0];
   }
 
   function evaluateFileLines(fileLines) {
-    let result = '';
     for(let i in fileLines) {
-      let text;
-      let index;
       processLines(fileLines, i);
     }
     return fileLines;
@@ -89,7 +86,7 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
         }
         j++;
       }
-      let entityBlock = fileLines.splice(i, j - i);
+      const entityBlock = fileLines.splice(i, j - i);
       entityBlock.pop();
       entityBlock.shift();
       for(let entity of descriptor.entities) {
@@ -118,7 +115,7 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
           }
           j++;
         }
-        let propBlock = fileLines.splice(i, j - i);
+        const propBlock = fileLines.splice(i, j - i);
         propBlock.pop();
         propBlock.shift();
         for(let prop of entity.props) {
@@ -129,7 +126,7 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
 
         if(variable) {
           let text = variable[1];
-          let textLength = text.length;
+          const textLength = text.length;
           let split;
           let modText = text;
           if(text.includes(':')) {
@@ -158,11 +155,7 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
   }
 
   function shallowCopy(array) {
-    let result = [];
-    for(let i in array) {
-      result[i] = array[i];
-    }
-    return result;
+    return array.slice();
   }
 
   function evaluateForEntityLoop(fileLines, entity) {
@@ -171,7 +164,7 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
 
         if(variable) {
           let text = variable[1];
-          let textLength = text.length;
+          const textLength = text.length;
           let split;
           let modText = text;
           if(text.includes(':')) {
@@ -195,7 +188,7 @@ if(process.argv[2] == 'install' || process.argv[2] == 'default') {
 
         if(variable) {
           let text = variable[1];
-          let textLength = text.length;
+          const textLength = text.length;
           let split;
           let modText = text;
           if(text.includes(':')) {
