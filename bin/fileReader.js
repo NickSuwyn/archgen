@@ -35,23 +35,23 @@ const dir = getDirectory(process.argv[1], process.argv[2]);
 
 fs.readdir(dir, (err, files) => {
   files.forEach(file => {
-    if (file.includes('.txt')) {
-      file = dir + file;
-      const curFile = fs.readFileSync(file, 'utf8');
-      const fileLines = parser.splitByLine(curFile);
+    if (!file.includes('.txt')) return;
 
-      if (fileLines[0] === '<_forEntity_>') {
-        for (let entity of descriptor.entities) {
-          outFiles.push(
-            evaluateFileLines(
-              evaluateForEntity(fileLines.slice(1, fileLines.length), entity)
-            )
-          );
-        }
-      } else {
-        fileDirectories.push(evaluateForPath(fileLines[0]));
-        outFiles.push(evaluateFileLines(fileLines.slice(1, fileLines.length)));
+    file = dir + file;
+    const curFile = fs.readFileSync(file, 'utf8');
+    const fileLines = parser.splitByLine(curFile);
+
+    if (fileLines[0] === '<_forEntity_>') {
+      for (let entity of descriptor.entities) {
+        outFiles.push(
+          evaluateFileLines(
+            evaluateForEntity(fileLines.slice(1, fileLines.length), entity)
+          )
+        );
       }
+    } else {
+      fileDirectories.push(evaluateForPath(fileLines[0]));
+      outFiles.push(evaluateFileLines(fileLines.slice(1, fileLines.length)));
     }
   });
 
@@ -113,25 +113,25 @@ function processLines(fileLines, i) {
 function evaluateForEntity(fileLines, entity) {
   fileLines = shallowCopy(fileLines);
   for (let i = 0; i < fileLines.length; i++) {
-    if (fileLines[i] == '<_forProp_>') {
-      let j = parseInt(i) + 1;
-      let foundEnd = false;
-      while (!foundEnd) {
-        if (fileLines[j] == '<_endForProp_>') {
-          foundEnd = true;
-        }
-        j++;
+    if (fileLines[i] !== '<_forProp_>') continue;
+
+    let j = parseInt(i) + 1;
+    let foundEnd = false;
+    while (!foundEnd) {
+      if (fileLines[j] === '<_endForProp_>') {
+        foundEnd = true;
       }
-      const propBlock = fileLines.splice(i, j - i);
-      propBlock.pop();
-      propBlock.shift();
-      for (let prop of entity.props) {
-        insertMultipleElementsIntoArray(
-          fileLines,
-          i,
-          evaluateTemplateVariable(shallowCopy(propBlock), prop, 'prop')
-        );
-      }
+      j++;
+    }
+    const propBlock = fileLines.splice(i, j - i);
+    propBlock.pop();
+    propBlock.shift();
+    for (let prop of entity.props) {
+      insertMultipleElementsIntoArray(
+        fileLines,
+        i,
+        evaluateTemplateVariable(shallowCopy(propBlock), prop, 'prop')
+      );
     }
   }
   filesLines = evaluateTemplateVariable(fileLines, entity, 'entity');
@@ -154,27 +154,25 @@ function evaluateTemplateVariable(fileLines, section, sectionType) {
   const sectionRegEx = getSectionRegEx(sectionType);
   for (let i in fileLines) {
     while ((variable = sectionRegEx.exec(fileLines[i]))) {
-      if (variable) {
-        let text = variable[1];
-        const textLength = text.length;
-        let split;
-        let modText = text;
-        if (text.includes(':')) {
-          split = parser.splitByColon(text);
-          text = split[0];
-          modText = stringUtil[split[1]](section[split[0]]);
-        } else {
-          modText = section[text];
-        }
-        index = variable.index;
-
-        const offset = getSectionOffset(sectionType);
-
-        fileLines[i] =
-          fileLines[i].substr(0, index) +
-          modText +
-          fileLines[i].substr(index + textLength + offset);
+      let text = variable[1];
+      const textLength = text.length;
+      let split;
+      let modText = text;
+      if (text.includes(':')) {
+        split = parser.splitByColon(text);
+        text = split[0];
+        modText = stringUtil[split[1]](section[split[0]]);
+      } else {
+        modText = section[text];
       }
+
+      const index = variable.index;
+      const offset = getSectionOffset(sectionType);
+
+      fileLines[i] =
+        fileLines[i].substr(0, index) +
+        modText +
+        fileLines[i].substr(index + textLength + offset);
     }
   }
   return fileLines;
