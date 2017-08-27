@@ -4,11 +4,7 @@ module.exports = {
   },
 
   buildFileFromArray: function(array) {
-    let result = '';
-    for(let line of array) {
-      result += line + '\n';
-    }
-    return result;
+    return array.join('\n')
   },
 
   splitByDot: function(str) {
